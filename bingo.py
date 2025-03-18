@@ -2,7 +2,7 @@ import random
 
 
 class Bingo:
-    """ Class Bingo. Works as the application model """
+    """ Class that works as the application model """
     def __init__(self):
         self.first_item = 0
         # create list

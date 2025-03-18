@@ -10,58 +10,48 @@ class Gui(tk.Tk):
     """ Class that works as the application view """
     def __init__(self, main):
         super().__init__()
-
         # check platform (SO) & set zoom status
         platform = self.tk.call('tk', 'windowingsystem')
         self.wm_state('zoomed') if platform == 'win32' else self.attributes('-zoomed', 1)
-        
         # add title to application
         self.title('Super Family Bingo')
-
         # add icon to application
         self.iconphoto(True, tk.PhotoImage(file='res/bingo.png'))
-
         # close window with the 'X' button
         self.protocol("WM_DELETE_WINDOW", self.exit_app)
-
         # background
-        self.config(bg='gray14')
-        
+        self.config(bg='gray14')        
         # communicates with the main.py
         self.main = main
+        self.add_components()
 
+
+    def add_components(self):
+        """ Add components to the main window """
         # header title frame
         self.frm_title = tk.Frame(self, bg='gray20')
         self.frm_title.pack(side=tk.TOP, fill=tk.X)
         tk.Label(self.frm_title, text='CONTROL PANEL', bg='gray20', 
             fg='white', font=('Consola', 35, 'bold')).pack(pady=10)
-
         # bingo matrix frame
         self.frm_array = tk.Frame(self, bg='gray14')
         self.frm_array.pack(side=tk.LEFT, fill=tk.Y, padx=70, pady=25)
-
         # add letters to matrix frame
         tk.Label(self.frm_array, text='B', bg='gray14', fg='yellow',
             font=('Consola', 50, 'bold')).grid(row=0, column=0, padx=5, pady=5)
         tk.Label(self.frm_array, text='I', bg='gray14', fg='yellow',
             font=('Consola', 50, 'bold')).grid(row=1, column=0, padx=5, pady=5)
-
         tk.Label(self.frm_array, text='N', bg='gray14', fg='yellow',
             font=('Consola', 50, 'bold')).grid(row=2, column=0, padx=5, pady=5)
-        
         tk.Label(self.frm_array, text='G', bg='gray14', fg='yellow',
             font=('Consola', 50, 'bold')).grid(row=3, column=0, padx=5, pady=5)
-        
         tk.Label(self.frm_array, text='O', bg='gray14', fg='yellow',
             font=('Consola', 50, 'bold')).grid(row=4, column=0, padx=5, pady=5)
-
         # game counter variables
         self.ini = 0
         self.fin = 75
-
         # dictionary that stores number and generated label as key:value
         self.lbl = {}
-
         # add labels(numbers) to matrix frame
         self.row_x = 0
         self.col_y = 1
@@ -72,43 +62,34 @@ class Gui(tk.Tk):
             if self.col_y == 16:
                 self.row_x += 1
                 self.col_y = 1
-
         # bar separator
         ttk.Separator(self, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, pady=25)
-
         # operation buttons frame
         self.frm_operations = tk.Frame(self, bg='gray14')
         self.frm_operations.pack(side=tk.LEFT, fill=tk.Y, padx=60, pady=25)
-
         # number of moves
         self.lbl_exit_number = tk.Label(self.frm_operations, text='PLAYS: 0/75', bg='gray14', 
             fg='white', font=('Consola', 12, 'bold'))
         self.lbl_exit_number.grid(row=0, column=0, pady=25)
-
         # bingo letter 
         self.lbl_letter = tk.Label(self.frm_operations, text='?', bg='gray14', fg='yellow',
             font=('Consola', 70, 'bold'))
-        self.lbl_letter.grid(row=1, column=0)
-        
+        self.lbl_letter.grid(row=1, column=0)       
         # bingo number
         self.lbl_number = tk.Label(self.frm_operations, text='?', bg='gray14', fg='yellow',
             font=('Consola', 70, 'bold'))
         self.lbl_number.grid(row=2, column=0)
-
         # play button
         self.btn_play = tk.Button(self.frm_operations, text='[ PLAY ]', width=12, bg='black', 
             fg='white', font='bold', command=self.play_bingo)
         self.btn_play.grid(row=3, column=0, pady=15)
         self.btn_play.focus()
-
         # reset button
         tk.Button(self.frm_operations, text='[ RESET ]', width=12, bg='green', fg='white', 
             font='bold', command=self.reset_play).grid(row=4, column=0, pady=15)
-
         # about button
         tk.Button(self.frm_operations, text='[ ABOUT ]', width=12, bg='blue', fg='white', 
             font='bold', command=self.window_about).grid(row=5, column=0)
-
         # exit button
         tk.Button(self.frm_operations, text='[ EXIT ]', width=12, bg='purple', fg='white', 
             font='bold', command=self.exit_app).grid(row=6, column=0, pady=15)
